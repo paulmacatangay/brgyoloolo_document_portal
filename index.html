@@ -26,15 +26,26 @@
     }
 
     body {
-      background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary-blue) 100%);
-      color: var(--text-dark);
-      margin: 0;
-      padding: 0;
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
+  background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary-blue) 100%);
+  color: var(--text-dark);
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column; /* Stacks the card and footer vertically */
+}
+
+.maintainer-credit {
+  color: #ffffff !important;
+  text-align: center;
+  font-size: 0.75rem;
+  margin-top: 25px;
+  font-weight: 500;
+  letter-spacing: 0.3px;
+  opacity: 0.9;
+}
 
     .login-wrapper {
       background: white;
@@ -128,6 +139,16 @@
       font-size: 0.82rem;
       font-weight: 600;
       margin-top: 15px;
+
+    .maintainer-credit {
+    text-align: center;
+    font-size: 0.75rem;
+    color: #bfdbfe;
+    margin-top: 25px;
+    font-weight: 500;
+    letter-spacing: 0.3px;
+    opacity: 0.85;
+}
     }
   </style>
 </head>
@@ -150,6 +171,25 @@
       <div id="errorMsg" class="error-msg">Incorrect password. Please try again.</div>
     </form>
   </div>
+<div class="maintainer-credit">Managed and Maintained by Paul Andrew Macatangay</div>
+
+  <script>
+    function handleLogin(e) {
+      e.preventDefault();
+      const pass = document.getElementById('passwordField').value;
+      if (pass === 'olo') {
+        sessionStorage.setItem('olo_logged_in', 'true');
+        window.location.href = 'dashboard.html';
+      } else {
+        document.getElementById('errorMsg').style.display = 'block';
+        document.getElementById('passwordField').value = '';
+        document.getElementById('passwordField').focus();
+      }
+    }
+  </script>
+
+</body>
+</html>
 
   <script>
     function handleLogin(e) {
