@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dashboard - Barangay Olo-Olo Portal</title>
+  <title>Login - Barangay Olo-Olo Document Portal</title>
   <script>
-    if (sessionStorage.getItem('olo_logged_in') !== 'true') {
-      window.location.href = 'login.html';
+    if (sessionStorage.getItem('olo_logged_in') === 'true') {
+      window.location.href = 'dashboard.html';
     }
   </script>
   <style>
@@ -20,164 +20,88 @@
       --main-font: 'Helvetica Neue', Helvetica, 'Inter', Arial, sans-serif;
     }
 
-    *, body, button, h1, h2, h3, p, div {
+    *, body, button, input, h1, h2, p {
       font-family: var(--main-font) !important;
       box-sizing: border-box;
     }
 
     body {
-      background-color: var(--bg-light);
+      background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary-blue) 100%);
       color: var(--text-dark);
       margin: 0;
       padding: 0;
-    }
-
-    .site-header {
-      background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary-blue) 100%);
-      color: white;
-      padding: 16px 20px;
-      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.15);
-      margin-bottom: 25px;
-      border-bottom: 3px solid #60a5fa;
-    }
-
-    .header-content {
-      max-width: 1200px;
-      margin: 0 auto;
+      min-height: 100vh;
       display: flex;
       align-items: center;
-      justify-content: space-between;
-      gap: 15px;
+      justify-content: center;
     }
 
-    .header-left {
-      display: flex;
-      align-items: center;
-      gap: 15px;
+    .login-wrapper {
+      background: white;
+      padding: 40px 30px;
+      border-radius: 12px;
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2);
+      width: 100%;
+      max-width: 400px;
+      text-align: center;
+      margin: 20px;
     }
 
-    .header-logo {
-      width: 65px;
-      height: 65px;
-      flex-shrink: 0;
+    .logo-container {
+      width: 80px;
+      height: 80px;
+      margin: 0 auto 15px auto;
     }
 
-    .header-logo img {
+    .logo-container img {
       width: 100%;
       height: 100%;
       object-fit: contain;
     }
 
-    .header-titles h1 {
-      margin: 0;
-      font-size: 1.25rem;
-      font-weight: 700;
-    }
-
-    .header-titles p {
-      margin: 3px 0 0 0;
-      font-size: 0.8rem;
-      color: #bfdbfe;
-    }
-
-    .btn-logout {
-      background: rgba(255, 255, 255, 0.15);
-      color: white;
-      border: 1px solid rgba(255, 255, 255, 0.3);
-      padding: 8px 16px;
-      border-radius: 6px;
-      font-size: 0.85rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.2s;
-      white-space: nowrap;
-    }
-
-    .btn-logout:hover {
-      background: #ef4444;
-      border-color: #ef4444;
-    }
-
-    .dashboard-container {
-      max-width: 1000px;
-      margin: 0 auto;
-      padding: 0 20px 40px 20px;
-    }
-
-    .section-title {
-      font-size: 1.1rem;
-      font-weight: 700;
-      color: var(--primary-dark);
-      margin-bottom: 20px;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-
-    .grid-cards {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 20px;
-    }
-
-    .doc-card {
-      background: white;
-      border-radius: 12px;
-      padding: 24px;
-      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      border-top: 5px solid var(--primary-blue);
-      transition: transform 0.2s, box-shadow 0.2s;
-    }
-
-    .doc-card:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.15);
-    }
-
-    .doc-card.disabled-card {
-      border-top: 5px solid #94a3b8;
-      background: #f8fafc;
-      opacity: 0.85;
-    }
-
-    .card-title {
-      font-size: 1.2rem;
+    .login-wrapper h1 {
+      font-size: 1.3rem;
       font-weight: 800;
       color: var(--primary-dark);
-      margin: 0 0 8px 0;
-    }
-
-    .card-desc {
-      font-size: 0.88rem;
-      color: #64748b;
-      line-height: 1.5;
-      margin: 0 0 20px 0;
-      flex-grow: 1;
-    }
-
-    .badge {
-      display: inline-block;
-      padding: 4px 10px;
-      border-radius: 12px;
-      font-size: 0.72rem;
-      font-weight: 700;
+      margin: 0 0 5px 0;
       text-transform: uppercase;
-      margin-bottom: 12px;
     }
 
-    .badge-active {
-      background: #dcfce7;
-      color: #166534;
+    .login-wrapper p {
+      font-size: 0.85rem;
+      color: #64748b;
+      margin: 0 0 25px 0;
     }
 
-    .badge-progress {
-      background: #fef9c3;
-      color: #854d0e;
+    .form-group {
+      margin-bottom: 20px;
+      text-align: left;
     }
 
-    .btn-select {
+    .form-group label {
+      display: block;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: #374151;
+      margin-bottom: 6px;
+      text-transform: uppercase;
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1px solid #cbd5e1;
+      border-radius: 6px;
+      font-size: 1rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .form-group input:focus {
+      border-color: var(--primary-blue);
+    }
+
+    .btn-login {
       width: 100%;
       background: var(--primary-blue);
       color: white;
@@ -187,93 +111,60 @@
       font-weight: 700;
       border-radius: 6px;
       cursor: pointer;
-      text-decoration: none;
-      display: block;
-      text-align: center;
       transition: background 0.2s;
     }
 
-    .btn-select:hover {
+    .btn-login:hover {
       background: var(--primary-dark);
     }
 
-    .btn-disabled {
-      background: #cbd5e1;
-      color: #64748b;
-      cursor: not-allowed;
-    }
-
-    @media (max-width: 600px) {
-      .header-content {
-        flex-direction: column;
-        text-align: center;
-      }
-      .header-left {
-        flex-direction: column;
-        gap: 8px;
-      }
-      .btn-logout {
-        width: 100%;
-      }
-      .section-title {
-        text-align: center;
-      }
+    .error-msg {
+      display: none;
+      background: #fee2e2;
+      color: #991b1b;
+      border: 1px solid #fca5a5;
+      padding: 10px;
+      border-radius: 6px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      margin-top: 15px;
     }
   </style>
 </head>
 <body>
 
-  <header class="site-header">
-    <div class="header-content">
-      <div class="header-left">
-        <div class="header-logo">
-          <img src="logo.png" alt="Olo-Olo Logo">
-        </div>
-        <div class="header-titles">
-          <h1>Barangay Olo-olo Portal</h1>
-          <p>Select a certification module to generate</p>
-        </div>
-      </div>
-      <button class="btn-logout" onclick="handleLogout()">Logout</button>
+  <div class="login-wrapper">
+    <div class="logo-container">
+      <img src="logo.png" alt="Olo-Olo Logo" onerror="this.style.display='none'">
     </div>
-  </header>
-
-  <main class="dashboard-container">
-    <div class="section-title">Available Systems</div>
-    <div class="grid-cards">
+    <h1>Barangay Olo-Olo</h1>
+    <p>Document Management Portal</p>
+    
+    <form onsubmit="handleLogin(event)">
+      <div class="form-group">
+        <label for="passwordField">Admin Password</label>
+        <input type="password" id="passwordField" placeholder="Enter password" required autofocus>
+      </div>
       
-      <!-- CARD 1 -->
-      <div class="doc-card">
-        <div>
-          <span class="badge badge-active">Active System</span>
-          <h3 class="card-title">Indigency Certificate</h3>
-          <p class="card-desc">
-            Generate and print official Certificate of Indigency for financial, medical, and educational assistance. Supported with cloud logs and local backups.
-          </p>
-        </div>
-        <a href="indigency.html" class="btn-select">Generate Indigency</a>
-      </div>
-
-      <!-- CARD 2 -->
-      <div class="doc-card disabled-card">
-        <div>
-          <span class="badge badge-progress">Under Construction</span>
-          <h3 class="card-title">Barangay Clearance</h3>
-          <p class="card-desc">
-            Official clearance document module for job applications, IDs, and general legal operations. Layout standardization in progress.
-          </p>
-        </div>
-        <a href="clearance.html" class="btn-select btn-disabled">Under Construction</a>
-      </div>
-
-    </div>
-  </main>
+      <button type="submit" class="btn-login">Login</button>
+      <div id="errorMsg" class="error-msg">Incorrect password. Please try again.</div>
+    </form>
+  </div>
 
   <script>
-    function handleLogout() {
-      sessionStorage.removeItem('olo_logged_in');
-      window.location.href = 'login.html';
+    function handleLogin(e) {
+      e.preventDefault();
+      const pass = document.getElementById('passwordField').value;
+      if (pass === 'olo') {
+        sessionStorage.setItem('olo_logged_in', 'true');
+        window.location.href = 'dashboard.html';
+      } else {
+        document.getElementById('errorMsg').style.display = 'block';
+        document.getElementById('passwordField').value = '';
+        document.getElementById('passwordField').focus();
+      }
     }
   </script>
+
 </body>
 </html>

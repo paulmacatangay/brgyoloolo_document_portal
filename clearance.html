@@ -6,7 +6,7 @@
   <title>Barangay Clearance - Under Construction</title>
   <script>
     if (sessionStorage.getItem('olo_logged_in') !== 'true') {
-      window.location.href = 'login.html';
+      window.location.href = 'index.html';
     }
   </script>
   <style>
@@ -84,6 +84,18 @@
       border-top: 5px solid #f59e0b;
     }
 
+    .status-badge {
+      display: inline-block;
+      background: #fef9c3;
+      color: #854d0e;
+      padding: 4px 12px;
+      border-radius: 12px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      margin-bottom: 15px;
+    }
+
     .construction-box h2 { color: var(--primary-dark); font-size: 1.3rem; margin: 0 0 10px 0; }
     .construction-box p { color: #64748b; line-height: 1.6; font-size: 0.9rem; margin-bottom: 25px; }
 
@@ -118,16 +130,17 @@
           <p>Module Status: Under Development</p>
         </div>
       </div>
-      <a href="index.html" class="btn-nav">Dashboard</a>
+      <a href="dashboard.html" class="btn-nav">Dashboard</a>
     </div>
   </header>
 
   <div class="construction-box">
+    <span class="status-badge">Status: In Progress</span>
     <h2>Module Under Construction</h2>
     <p>
       The Barangay Clearance system is undergoing development. Once ready, you will be able to manage and print legal clearance certifications directly from this tab.
     </p>
-    <a href="index.html" class="btn-back">Return to Dashboard</a>
+    <a href="dashboard.html" class="btn-back">Return to Dashboard</a>
   </div>
 
 </body>
