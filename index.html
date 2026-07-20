@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Dashboard - Barangay Olo-Olo Portal</title>
   <script>
-    /* 🛑 IMMEDIATE ROUTE GUARD */
     if (sessionStorage.getItem('olo_logged_in') !== 'true') {
       window.location.href = 'login.html';
     }
@@ -33,13 +32,12 @@
       padding: 0;
     }
 
-    /* ================= WEB SITE HEADER ================= */
     .site-header {
       background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary-blue) 100%);
       color: white;
-      padding: 16px 30px;
+      padding: 16px 20px;
       box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.15);
-      margin-bottom: 40px;
+      margin-bottom: 25px;
       border-bottom: 3px solid #60a5fa;
     }
 
@@ -49,21 +47,18 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 18px;
+      gap: 15px;
     }
 
     .header-left {
       display: flex;
       align-items: center;
-      gap: 18px;
+      gap: 15px;
     }
 
     .header-logo {
-      width: 80px;
-      height: 80px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      width: 65px;
+      height: 65px;
       flex-shrink: 0;
     }
 
@@ -75,14 +70,13 @@
 
     .header-titles h1 {
       margin: 0;
-      font-size: 1.4rem;
-      letter-spacing: 0.5px;
+      font-size: 1.25rem;
       font-weight: 700;
     }
 
     .header-titles p {
       margin: 3px 0 0 0;
-      font-size: 0.85rem;
+      font-size: 0.8rem;
       color: #bfdbfe;
     }
 
@@ -96,6 +90,7 @@
       font-weight: 600;
       cursor: pointer;
       transition: all 0.2s;
+      white-space: nowrap;
     }
 
     .btn-logout:hover {
@@ -103,15 +98,14 @@
       border-color: #ef4444;
     }
 
-    /* ================= DASHBOARD LAYOUT ================= */
     .dashboard-container {
       max-width: 1000px;
       margin: 0 auto;
-      padding: 0 20px;
+      padding: 0 20px 40px 20px;
     }
 
     .section-title {
-      font-size: 1.25rem;
+      font-size: 1.1rem;
       font-weight: 700;
       color: var(--primary-dark);
       margin-bottom: 20px;
@@ -121,14 +115,14 @@
 
     .grid-cards {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 24px;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
     }
 
     .doc-card {
       background: white;
       border-radius: 12px;
-      padding: 30px;
+      padding: 24px;
       box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
       display: flex;
       flex-direction: column;
@@ -138,7 +132,7 @@
     }
 
     .doc-card:hover {
-      transform: translateY(-4px);
+      transform: translateY(-2px);
       box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.15);
     }
 
@@ -148,28 +142,18 @@
       opacity: 0.85;
     }
 
-    .doc-card.disabled-card:hover {
-      transform: none;
-      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-    }
-
-    .card-icon {
-      font-size: 3rem;
-      margin-bottom: 15px;
-    }
-
     .card-title {
-      font-size: 1.3rem;
+      font-size: 1.2rem;
       font-weight: 800;
       color: var(--primary-dark);
-      margin: 0 0 10px 0;
+      margin: 0 0 8px 0;
     }
 
     .card-desc {
-      font-size: 0.9rem;
+      font-size: 0.88rem;
       color: #64748b;
       line-height: 1.5;
-      margin: 0 0 25px 0;
+      margin: 0 0 20px 0;
       flex-grow: 1;
     }
 
@@ -177,7 +161,7 @@
       display: inline-block;
       padding: 4px 10px;
       border-radius: 12px;
-      font-size: 0.75rem;
+      font-size: 0.72rem;
       font-weight: 700;
       text-transform: uppercase;
       margin-bottom: 12px;
@@ -199,7 +183,7 @@
       color: white;
       border: none;
       padding: 12px;
-      font-size: 1rem;
+      font-size: 0.95rem;
       font-weight: 700;
       border-radius: 6px;
       cursor: pointer;
@@ -219,14 +203,26 @@
       cursor: not-allowed;
     }
 
-    .btn-disabled:hover {
-      background: #cbd5e1;
+    @media (max-width: 600px) {
+      .header-content {
+        flex-direction: column;
+        text-align: center;
+      }
+      .header-left {
+        flex-direction: column;
+        gap: 8px;
+      }
+      .btn-logout {
+        width: 100%;
+      }
+      .section-title {
+        text-align: center;
+      }
     }
   </style>
 </head>
 <body>
 
-  <!-- HEADER -->
   <header class="site-header">
     <div class="header-content">
       <div class="header-left">
@@ -234,41 +230,37 @@
           <img src="logo.png" alt="Olo-Olo Logo">
         </div>
         <div class="header-titles">
-          <h1>Barangay Olo-olo Document Portal</h1>
-          <p>Select a certification or clearance to generate</p>
+          <h1>Barangay Olo-olo Portal</h1>
+          <p>Select a certification module to generate</p>
         </div>
       </div>
       <button class="btn-logout" onclick="handleLogout()">Logout</button>
     </div>
   </header>
 
-  <!-- DASHBOARD -->
   <main class="dashboard-container">
-    <div class="section-title">Available Document Systems</div>
-
+    <div class="section-title">Available Systems</div>
     <div class="grid-cards">
       
-      <!-- CARD 1: INDIGENCY -->
+      <!-- CARD 1 -->
       <div class="doc-card">
         <div>
-          <span class="badge badge-active">● Active System</span>
-          <div class="card-icon"></div>
-          <h3 class="card-title">Barangay Indigency Certificate</h3>
+          <span class="badge badge-active">Active System</span>
+          <h3 class="card-title">Indigency Certificate</h3>
           <p class="card-desc">
-            Generate and print official Certificate of Indigency for financial assistance, medical, educational, and social welfare purposes. Includes offline backup and automatic Google Sheets logging.
+            Generate and print official Certificate of Indigency for financial, medical, and educational assistance. Supported with cloud logs and local backups.
           </p>
         </div>
         <a href="indigency.html" class="btn-select">Generate Indigency</a>
       </div>
 
-      <!-- CARD 2: CLEARANCE -->
+      <!-- CARD 2 -->
       <div class="doc-card disabled-card">
         <div>
           <span class="badge badge-progress">Under Construction</span>
-          <div class="card-icon"></div>
-          <h3 class="card-title">Barangay Clearance Certificate</h3>
+          <h3 class="card-title">Barangay Clearance</h3>
           <p class="card-desc">
-            Official clearance document for employment, postal ID, business requirements, and general legal purposes. This module is currently undergoing development and layout standardization.
+            Official clearance document module for job applications, IDs, and general legal operations. Layout standardization in progress.
           </p>
         </div>
         <a href="clearance.html" class="btn-select btn-disabled">Under Construction</a>
