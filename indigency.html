@@ -494,13 +494,18 @@
 
   </main>
 
-  <script>
+ <script>
+    // PASTE YOUR DEPLOYED GOOGLE APPS SCRIPT URL HERE:
     const GOOGLE_SHEET_URL = "https://script.google.com/macros/s/AKfycbyNDA6WYyTe8dvTkeNmaEFv66wKW8SIYJ8zzisZFMA3XoXwDAptj-7y-P5LYWqS4s9Z/exec"; 
 
     window.addEventListener('DOMContentLoaded', () => {
       const today = new Date().toISOString().split('T')[0];
       document.getElementById('inputDate').value = today;
+      
+      // Load local cache instantly for responsive UI, then sync with cloud
       loadNextControlNumber();
+      syncCloudSequence();
+      
       updateRecordCountDisplay();
       updateCert();
     });
@@ -508,6 +513,33 @@
     function handleLogout() {
       sessionStorage.removeItem('olo_logged_in');
       window.location.href = 'index.html';
+    }
+
+    // Pulls the latest sequence directly from Google Sheets across all devices
+    function syncCloudSequence() {
+      const statusBanner = document.getElementById('syncStatus');
+      
+      if (!GOOGLE_SHEET_URL || GOOGLE_SHEET_URL.includes("YOUR_GOOGLE")) return;
+
+      fetch(GOOGLE_SHEET_URL)
+        .then(response => response.json())
+        .then(data => {
+          if (data && data.nextSequence) {
+            localStorage.setItem('olo_cert_sequence', data.nextSequence);
+            loadNextControlNumber();
+            statusBanner.className = "status-banner status-success";
+            statusBanner.innerHTML = "Synced with Cloud Database (" + data.formattedControl + ")";
+            setTimeout(() => {
+              statusBanner.className = "status-banner";
+              statusBanner.innerHTML = "Connected to Cloud Database";
+            }, 3000);
+          }
+        })
+        .catch(err => {
+          console.warn("Cloud sequence sync failed, using offline cache:", err);
+          statusBanner.className = "status-banner status-saving";
+          statusBanner.innerHTML = "Offline Mode: Using Device Sequence";
+        });
     }
 
     function loadNextControlNumber() {
@@ -551,15 +583,18 @@
         dateIssued: document.getElementById('inputDate').value
       };
 
+      // Save locally as backup
       let records = JSON.parse(localStorage.getItem('olo_cert_records') || '[]');
       records.push(record);
       localStorage.setItem('olo_cert_records', JSON.stringify(records));
       updateRecordCountDisplay();
 
+      // Print document immediately
       window.print();
       incrementSequence();
 
-      if (GOOGLE_SHEET_URL && GOOGLE_SHEET_URL !== "YOUR_GOOGLE_WEB_APP_URL_HERE") {
+      // Push to Google Sheets and re-sync the latest sequence number for next time
+      if (GOOGLE_SHEET_URL && !GOOGLE_SHEET_URL.includes("YOUR_GOOGLE")) {
         btn.disabled = true;
         statusBanner.className = "status-banner status-saving";
         statusBanner.innerHTML = "Saving to Google Sheets...";
@@ -572,14 +607,13 @@
         })
         .then(() => {
           statusBanner.className = "status-banner status-success";
-          statusBanner.innerHTML = "Saved directly to Google Sheets!";
+          statusBanner.innerHTML = "Saved to Google Sheets!";
           btn.disabled = false;
           document.getElementById('inputName').value = '';
           updateCert();
-          setTimeout(() => {
-            statusBanner.className = "status-banner";
-            statusBanner.innerHTML = "Connected to Cloud Database";
-          }, 4000);
+          
+          // Re-sync with cloud after 1.5 seconds to get the fresh continuous number
+          setTimeout(() => { syncCloudSequence(); }, 1500);
         })
         .catch(error => {
           console.error(error);
