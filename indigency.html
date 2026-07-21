@@ -11,19 +11,19 @@
   </script>
   
   <style>
-    
     * {
-  box-sizing: border-box !important;
-}
+      box-sizing: border-box !important;
+    }
 
-html, body {
-  max-width: 100% !important;
-  overflow-x: hidden !important;
-  margin: 0;
-  padding: 0;
-  width: 100%;
-  position: relative;
-}
+    html, body {
+      max-width: 100% !important;
+      overflow-x: hidden !important;
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      position: relative;
+    }
+
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 
     :root {
@@ -40,72 +40,28 @@ html, body {
       box-sizing: border-box;
     }
 
-   body {
-  background-color: var(--bg-light);
-  color: var(--text-dark);
-  margin: 0;
-  padding: 0;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-}
+    body {
+      background-color: var(--bg-light);
+      color: var(--text-dark);
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
 
-.site-footer {
-  background: var(--primary-dark);
-  color: #ffffff !important;
-  text-align: center;
-  font-size: 0.75rem;
-  padding: 12px 20px;
-  margin-top: auto;
-  width: 100%;
-  font-weight: 500;
-  letter-spacing: 0.3px;
-  border-top: 2px solid #60a5fa;
-}
-
-@media print {
-  body { 
-    background: none !important; 
-    padding: 0 !important; 
-    margin: 0 !important; 
-  }
-  
-  /* Hide all UI navigation, form controls, and footer credits during printing */
-  .site-header, 
-  .form-container, 
-  .mobile-scroll-tip, 
-  .site-footer, 
-  .maintainer-credit { 
-    display: none !important; 
-  }
-  
-  .main-content { 
-    padding: 0 !important; 
-    margin: 0 !important; 
-    display: block !important; 
-  }
-
-  /* Completely strip the gray background, border, and padding from the stage */
-  .preview-stage {
-    background: transparent !important;
-    border: none !important;
-    padding: 0 !important;
-    margin: 0 !important;
-    overflow: visible !important;
-    box-shadow: none !important;
-  }
-
-  /* Remove outer drop-shadows and spacing from the certificate paper */
-  .certificate-wrapper {
-    box-shadow: none !important;
-    border: none !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    width: 100% !important;
-    max-width: none !important;
-  }
-}
-
+    .site-footer {
+      background: var(--primary-dark);
+      color: #ffffff !important;
+      text-align: center;
+      font-size: 0.75rem;
+      padding: 12px 20px;
+      margin-top: auto;
+      width: 100%;
+      font-weight: 500;
+      letter-spacing: 0.3px;
+      border-top: 2px solid #60a5fa;
+    }
 
     .site-header {
       background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary-blue) 100%);
@@ -457,7 +413,6 @@ html, body {
         font-size: 1rem;
         min-height: 48px;
       }
-      /* Isolates horizontal scrolling STRICTLY inside the gray viewer box */
       .preview-stage {
         width: 100% !important;
         max-width: 100% !important;
@@ -489,16 +444,69 @@ html, body {
       }
     }
 
+    /* SINGLE UNIFIED CONFLICT-FREE PRINT STYLESHEET */
     @media print {
-      body { background: none; padding: 0; margin: 0; }
-      .site-header, .form-container, .mobile-scroll-tip { display: none !important; }
-      .main-content { padding: 0 !important; margin: 0 !important; display: block !important; }
-      .preview-stage { overflow: visible !important; width: auto !important; max-width: none !important; }
-      .certificate-wrapper { box-shadow: none; width: 210mm !important; height: 148.5mm !important; padding: 6mm !important; margin: 0 !important; }
+      body { 
+        background: none !important; 
+        padding: 0 !important; 
+        margin: 0 !important; 
+      }
+      
+      .site-header, 
+      .form-container, 
+      .mobile-scroll-tip, 
+      .site-footer, 
+      .maintainer-credit { 
+        display: none !important; 
+      }
+      
+      .main-content { 
+        padding: 0 !important; 
+        margin: 0 !important; 
+        display: flex !important; 
+        justify-content: center !important; 
+        align-items: flex-start !important;
+        width: 100% !important;
+      }
+
+      .preview-stage {
+        background: transparent !important;
+        border: none !important;
+        padding: 0 !important;
+        margin: 0 auto !important;
+        overflow: visible !important;
+        box-shadow: none !important;
+        display: flex !important;
+        justify-content: center !important;
+        width: 100% !important;
+      }
+
+      .certificate-wrapper {
+        box-shadow: none !important;
+        border: none !important;
+        margin: 0 auto !important;
+        padding: 6mm !important;
+        width: 210mm !important;
+        height: 148.5mm !important;
+        max-width: none !important;
+        position: relative !important;
+        left: auto !important;
+        right: auto !important;
+      }
+
       .cert-border-outer { border: 4px solid #2563eb !important; }
       .cert-border-inner { border: 1px solid #3b82f6 !important; }
-      * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
-      @page { size: 210mm 148.5mm landscape; margin: 0; }
+
+      * { 
+        -webkit-print-color-adjust: exact !important; 
+        print-color-adjust: exact !important; 
+      }
+
+      /* Forces exact standard A4 bounds with symmetrical 5mm safety margins */
+      @page { 
+        size: A4; 
+        margin: 5mm; 
+      }
     }
   </style>
 </head>
@@ -636,17 +644,12 @@ html, body {
     </div>
 
   </main>
+  
   <footer class="site-footer">
     Managed and Maintained by Paul Andrew Macatangay
   </footer>
 
   <script>
-    /* ... your existing functions and sequence logic ... */
-  </script>
-</body>
-</html>
-
- <script>
     // PASTE YOUR DEPLOYED GOOGLE APPS SCRIPT URL HERE:
     const GOOGLE_SHEET_URL = "https://script.google.com/macros/s/AKfycbyNDA6WYyTe8dvTkeNmaEFv66wKW8SIYJ8zzisZFMA3XoXwDAptj-7y-P5LYWqS4s9Z/exec"; 
 
