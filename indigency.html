@@ -64,12 +64,48 @@ html, body {
 }
 
 @media print {
-  body { background: none; padding: 0; margin: 0; }
-  /* Add .site-footer to your existing print display hidden list below */
-  .site-header, .form-container, .mobile-scroll-tip, .site-footer { display: none !important; }
-  .main-content { padding: 0 !important; margin: 0 !important; display: block !important; }
-  /* ... rest of your print styles ... */
+  body { 
+    background: none !important; 
+    padding: 0 !important; 
+    margin: 0 !important; 
+  }
+  
+  /* Hide all UI navigation, form controls, and footer credits during printing */
+  .site-header, 
+  .form-container, 
+  .mobile-scroll-tip, 
+  .site-footer, 
+  .maintainer-credit { 
+    display: none !important; 
+  }
+  
+  .main-content { 
+    padding: 0 !important; 
+    margin: 0 !important; 
+    display: block !important; 
+  }
+
+  /* Completely strip the gray background, border, and padding from the stage */
+  .preview-stage {
+    background: transparent !important;
+    border: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    overflow: visible !important;
+    box-shadow: none !important;
+  }
+
+  /* Remove outer drop-shadows and spacing from the certificate paper */
+  .certificate-wrapper {
+    box-shadow: none !important;
+    border: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 100% !important;
+    max-width: none !important;
+  }
 }
+
 
     .site-header {
       background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary-blue) 100%);
