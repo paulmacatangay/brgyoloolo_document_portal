@@ -9,7 +9,21 @@
       window.location.href = 'index.html';
     }
   </script>
+  
   <style>
+    
+    * {
+  box-sizing: border-box !important;
+}
+
+html, body {
+  max-width: 100% !important;
+  overflow-x: hidden !important;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  position: relative;
+}
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 
     :root {
@@ -346,6 +360,18 @@
     .signatory-title { font-size: 0.8rem; color: #111; margin-top: 2px; }
 
     @media (max-width: 768px) {
+      html, body {
+        overflow-x: hidden !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        position: relative;
+      }
+      .site-header, .site-footer {
+        width: 100% !important;
+        max-width: 100% !important;
+        padding-left: 15px !important;
+        padding-right: 15px !important;
+      }
       .header-content {
         flex-direction: column;
         text-align: center;
@@ -353,20 +379,77 @@
       }
       .header-left {
         flex-direction: column;
-        gap: 6px;
+        gap: 8px;
+      }
+      .header-actions {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+      }
+      .header-actions .btn-nav,
+      .header-actions .btn-logout {
+        flex: 1;
+        max-width: 140px;
+        text-align: center;
+        padding: 10px;
+      }
+      .main-content {
+        width: 100% !important;
+        max-width: 100% !important;
+        padding: 10px !important;
+        margin: 0 !important;
+        overflow-x: hidden !important;
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
       }
       .form-container {
-        width: 100%;
-        max-width: 100%;
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+        padding: 18px 15px !important;
+        margin: 0 !important;
       }
+      .form-group input, 
+      .form-group select {
+        font-size: 16px !important;
+        padding: 12px 10px;
+      }
+      .btn-print {
+        padding: 14px;
+        font-size: 1rem;
+        min-height: 48px;
+      }
+      /* Isolates horizontal scrolling STRICTLY inside the gray viewer box */
       .preview-stage {
-        width: 100%;
-        overflow-x: auto;
-        -webkit-overflow-scrolling: touch;
-        padding-bottom: 10px;
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+        overflow-x: auto !important;
+        overflow-y: hidden !important;
+        -webkit-overflow-scrolling: touch !important;
+        overscroll-behavior-x: contain;
+        display: block !important;
+        padding: 15px 10px !important;
+        margin: 0 0 15px 0 !important;
+        background: #e2e8f0;
+        border: 1px solid #cbd5e1;
+        border-radius: 8px;
+      }
+      .certificate-wrapper {
+        margin: 0 auto;
+        display: inline-block !important;
+        flex-shrink: 0;
       }
       .mobile-scroll-tip {
         display: block;
+        margin: 0 0 12px 0;
+        font-size: 0.78rem;
+        padding: 10px;
+        background: #eff6ff;
+        border-radius: 6px;
+        line-height: 1.4;
       }
     }
 
