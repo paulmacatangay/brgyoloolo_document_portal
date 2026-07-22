@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Barangay Certification - Olo-Olo</title>
   
   <script>
@@ -30,7 +30,7 @@
     body { background-color: var(--bg-light); color: var(--text-dark); margin: 0; padding: 0; min-height: 100vh; display: flex; flex-direction: column; }
     
     .site-footer { background: var(--primary-dark); color: #ffffff !important; text-align: center; font-size: 0.75rem; padding: 12px 20px; margin-top: auto; width: 100%; font-weight: 500; letter-spacing: 0.3px; border-top: 2px solid #60a5fa; }
-    .site-header { background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary-blue) 100%); color: white; padding: 16px 20px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.15); margin-bottom: 25px; border-bottom: 3px solid #60a5fa; }
+    .site-header { background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary-blue) 100%); color: white; padding: 16px 20px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.15); margin-bottom: 25px; border-bottom: 3px solid #60a5fa; width: 100%; }
     .header-content { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 15px; }
     .header-left { display: flex; align-items: center; gap: 15px; }
     .header-logo { width: 70px; height: 70px; flex-shrink: 0; }
@@ -43,8 +43,8 @@
     .btn-logout { background: rgba(255, 255, 255, 0.15); color: white; border: 1px solid rgba(255, 255, 255, 0.3); padding: 8px 14px; border-radius: 6px; font-size: 0.8rem; font-weight: 600; cursor: pointer; transition: all 0.2s; white-space: nowrap; }
     .btn-logout:hover { background: #ef4444; border-color: #ef4444; }
     
-    .main-content { display: flex; gap: 25px; justify-content: center; align-items: flex-start; flex-wrap: wrap; padding: 0 20px 40px 20px; max-width: 1350px; margin: 0 auto; }
-    .form-container { background: white; padding: 24px; border-radius: 8px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); width: 380px; flex-shrink: 0; }
+    .main-content { display: flex; gap: 25px; justify-content: center; align-items: flex-start; flex-wrap: wrap; padding: 0 15px 40px 15px; max-width: 1350px; margin: 0 auto; width: 100%; }
+    .form-container { background: white; padding: 24px; border-radius: 8px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); width: 100%; max-width: 400px; flex-shrink: 0; }
     .form-container h2 { margin-top: 0; color: var(--primary-blue); font-size: 1.2rem; border-bottom: 2px solid var(--primary-blue); padding-bottom: 8px; margin-bottom: 15px; }
     .form-group { margin-bottom: 12px; }
     .form-group label { display: block; font-size: 0.82rem; font-weight: 600; margin-bottom: 4px; color: #374151; }
@@ -70,10 +70,9 @@
     .ledger-title { font-size: 0.85rem; font-weight: bold; color: #334155; display: flex; justify-content: space-between; align-items: center; }
     .record-count { background: #e2e8f0; padding: 2px 8px; border-radius: 12px; font-size: 0.72rem; }
     
-    .preview-stage { width: 100%; max-width: 210mm; }
-    .mobile-scroll-tip { display: none; background: #eff6ff; color: #1d4ed8; border: 1px solid #bfdbfe; padding: 8px 12px; border-radius: 6px; font-size: 0.8rem; font-weight: 600; text-align: center; margin-bottom: 12px; }
+    .preview-stage { width: 100%; max-width: 210mm; display: flex; flex-direction: column; align-items: center; overflow: hidden; }
     
-    .certificate-wrapper { background: white; width: 210mm; height: 297mm; padding: 6mm; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); position: relative; }
+    .certificate-wrapper { background: white; width: 210mm; height: 297mm; padding: 6mm; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); position: relative; flex-shrink: 0; }
     .cert-border-outer { width: 100%; height: 100%; border: 4px solid #2563eb; padding: 3px; }
     .cert-border-inner { width: 100%; height: 100%; border: 1px solid #3b82f6; padding: 8mm 10mm; position: relative; display: flex; flex-direction: column; justify-content: space-between; background-color: #ffffff; }
     
@@ -115,24 +114,26 @@
     .signatory-name { font-weight: bold; text-decoration: underline; font-size: 0.95rem; color: #1e3a8a; }
     .signatory-title { font-size: 0.8rem; color: #111; margin-top: 2px; }
 
-    @media (max-width: 768px) {
-      .header-content { flex-direction: column; text-align: center; }
-      .header-left { flex-direction: column; }
-      .header-actions { width: 100%; justify-content: center; }
-      .form-container { width: 100% !important; }
-      .preview-stage { overflow-x: auto !important; display: block !important; }
-      .certificate-wrapper { margin: 0 auto; display: inline-block !important; }
-      .mobile-scroll-tip { display: block; }
+    /* Mobile & Tablet Responsiveness */
+    @media (max-width: 850px) {
+      .header-content { flex-direction: column; text-align: center; gap: 12px; }
+      .header-left { flex-direction: column; gap: 10px; }
+      .header-actions { width: 100%; justify-content: center; flex-wrap: wrap; }
+      .main-content { padding: 0 10px 30px 10px !important; gap: 20px; }
+      .form-container { width: 100% !important; max-width: 100% !important; padding: 16px !important; }
+      /* Force 16px font on inputs to prevent iOS auto-zoom bug */
+      .form-group input, .form-group select { font-size: 16px !important; padding: 10px !important; }
+      .preview-stage { width: 100% !important; max-width: 100% !important; overflow: hidden !important; }
     }
 
-    /* Print Centering Fix */
+    /* Print Centering Fix - Resets any mobile scaling automatically */
     @media print {
       @page { size: A4 portrait; margin: 0mm !important; }
       html, body { width: 210mm !important; height: 297mm !important; margin: 0 !important; padding: 0 !important; background: #fff !important; overflow: hidden !important; }
-      .site-header, .form-container, .mobile-scroll-tip, .site-footer { display: none !important; }
+      .site-header, .form-container, .site-footer { display: none !important; }
       .main-content { padding: 0 !important; margin: 0 !important; display: block !important; width: 100% !important; }
-      .preview-stage { width: 100% !important; max-width: none !important; padding: 0 !important; margin: 0 !important; border: none !important; background: transparent !important; }
-      .certificate-wrapper { width: 210mm !important; height: 297mm !important; padding: 6mm !important; margin: 0 !important; box-shadow: none !important; border: none !important; box-sizing: border-box !important; position: absolute !important; top: 0 !important; left: 0 !important; }
+      .preview-stage { width: 100% !important; max-width: none !important; height: auto !important; padding: 0 !important; margin: 0 !important; border: none !important; background: transparent !important; }
+      .certificate-wrapper { transform: none !important; width: 210mm !important; height: 297mm !important; padding: 6mm !important; margin: 0 !important; box-shadow: none !important; border: none !important; box-sizing: border-box !important; position: absolute !important; top: 0 !important; left: 0 !important; }
       .cert-border-outer { width: 100% !important; height: 100% !important; border: 4px solid #2563eb !important; box-sizing: border-box !important; }
       .cert-border-inner { width: 100% !important; height: 100% !important; border: 1px solid #3b82f6 !important; box-sizing: border-box !important; }
       * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
@@ -148,7 +149,7 @@
           <img src="logo.png" alt="Olo-Olo Logo">
         </div>
         <div class="header-titles">
-          <h1>Barangay Certification Generator</h1>
+          <h1>Certification Generator</h1>
           <p>Barangay Olo-olo, Lobo, Batangas</p>
         </div>
       </div>
@@ -173,8 +174,8 @@
         <video id="webcam" autoplay playsinline></video>
         <canvas id="canvas" style="display:none;"></canvas>
         <div>
-          <button type="button" class="btn-cam" id="btnStartCam" onclick="startCamera()">Open Camera</button>
-          <button type="button" class="btn-cam btn-snap" id="btnSnapCam" style="display:none;" onclick="snapPhoto()">Snap Photo</button>
+          <button type="button" class="btn-cam" id="btnStartCam" onclick="startCamera()">📷 Open Camera</button>
+          <button type="button" class="btn-cam btn-snap" id="btnSnapCam" style="display:none;" onclick="snapPhoto()">📸 Snap Photo</button>
         </div>
       </div>
 
@@ -255,10 +256,8 @@
       </div>
     </div>
 
-    <div class="preview-stage">
-      <div class="mobile-scroll-tip">Note: Swipe left or right on the certificate below to check layout preview.</div>
-      
-      <div class="certificate-wrapper">
+    <div class="preview-stage" id="previewStage">
+      <div class="certificate-wrapper" id="certWrapper">
         <div class="cert-border-outer">
           <div class="cert-border-inner">
             
@@ -377,7 +376,7 @@
 
   <script>
     // PASTE YOUR NEW SEPARATE GOOGLE SHEET APPS SCRIPT URL HERE:
-    const GOOGLE_SHEET_URL = "https://script.google.com/macros/s/AKfycbyD1FW9tUi7377leEmLaZuTiXNArujAKfLkxH_Ic7qaqDYy49XBjd2xUw0Q-5skf8NX/exec"; 
+    const GOOGLE_SHEET_URL = "YOUR_NEW_SEPARATE_GOOGLE_SHEET_URL_HERE"; 
     let videoStream = null;
 
     window.addEventListener('DOMContentLoaded', () => {
@@ -389,10 +388,36 @@
         syncCloudSequence();
         updateRecordCountDisplay();
         updateCert();
+        adjustPreviewScale();
       } catch (err) {
         console.error("Initialization error:", err);
       }
     });
+
+    // Dynamically scales the A4 certificate preview to fit any mobile screen
+    window.addEventListener('resize', adjustPreviewScale);
+
+    function adjustPreviewScale() {
+      const stage = document.getElementById('previewStage');
+      const wrapper = document.getElementById('certWrapper');
+      if (!stage || !wrapper) return;
+
+      if (window.innerWidth <= 850) {
+        const availableWidth = stage.clientWidth;
+        const certWidth = 794; // approx 210mm in pixels
+        const scale = Math.min(1, availableWidth / certWidth);
+        
+        wrapper.style.transform = `scale(${scale})`;
+        wrapper.style.transformOrigin = 'top center';
+        
+        const certHeight = 1123; // approx 297mm in pixels
+        stage.style.height = `${(certHeight * scale) + 10}px`;
+      } else {
+        wrapper.style.transform = 'none';
+        wrapper.style.transformOrigin = 'initial';
+        stage.style.height = 'auto';
+      }
+    }
 
     function handleLogout() {
       sessionStorage.removeItem('olo_logged_in');
@@ -443,7 +468,7 @@
       }
       video.style.display = 'none';
       btnSnap.style.display = 'none';
-      btnStart.innerText = "Retake Photo";
+      btnStart.innerText = "🔄 Retake Photo";
       btnStart.style.display = 'inline-block';
     }
 
