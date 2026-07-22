@@ -2,10 +2,10 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Barangay Indigency Certificate - Olo-Olo</title>
   <script>
-    if (sessionStorage.getItem('olo_logged_in') !== 'true') {
+    if (sessionStorage.getItem('olo_logged_in') !== 'true' && window.location.protocol !== 'file:') {
       window.location.href = 'index.html';
     }
   </script>
@@ -70,6 +70,7 @@
       box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.15);
       margin-bottom: 25px;
       border-bottom: 3px solid #60a5fa;
+      width: 100%;
     }
 
     .header-content {
@@ -161,6 +162,7 @@
       padding: 0 20px 40px 20px;
       max-width: 1300px;
       margin: 0 auto;
+      width: 100%;
     }
 
     .form-container {
@@ -444,68 +446,80 @@
       }
     }
 
-    /* SINGLE UNIFIED CONFLICT-FREE PRINT STYLESHEET */
+    /* Universal Print Centering (Mobile & Desktop) */
     @media print {
-      body { 
-        background: none !important; 
-        padding: 0 !important; 
-        margin: 0 !important; 
+      @page { 
+        size: A4 portrait; 
+        margin: 0mm !important; 
       }
-      
+      html, body { 
+        width: 100% !important; 
+        height: auto !important; 
+        min-height: 100% !important;
+        margin: 0 !important; 
+        padding: 0 !important; 
+        background: #fff !important; 
+        overflow: visible !important; 
+      }
       .site-header, 
       .form-container, 
       .mobile-scroll-tip, 
-      .site-footer, 
-      .maintainer-credit { 
+      .site-footer { 
         display: none !important; 
       }
-      
       .main-content { 
         padding: 0 !important; 
         margin: 0 !important; 
+        display: block !important; 
+        width: 100% !important; 
+      }
+      .preview-stage { 
+        width: 100% !important; 
+        max-width: none !important; 
+        height: auto !important; 
+        padding: 0 !important; 
+        margin: 0 !important; 
+        border: none !important; 
+        background: transparent !important; 
         display: flex !important; 
         justify-content: center !important; 
-        align-items: flex-start !important;
-        width: 100% !important;
-      }
-
-      .preview-stage {
-        background: transparent !important;
-        border: none !important;
-        padding: 0 !important;
-        margin: 0 auto !important;
-        overflow: visible !important;
+        align-items: flex-start !important; 
+        overflow: visible !important; 
         box-shadow: none !important;
-        display: flex !important;
-        justify-content: center !important;
-        width: 100% !important;
       }
-
-      .certificate-wrapper {
-        box-shadow: none !important;
-        border: none !important;
-        margin: 0 auto !important;
-        padding: 6mm !important;
-        width: 210mm !important;
-        height: 148.5mm !important;
-        max-width: none !important;
-        position: relative !important;
-        left: auto !important;
+      .certificate-wrapper { 
+        display: block !important;
+        transform: none !important; 
+        transform-origin: top left !important;
+        width: 210mm !important; 
+        height: 148.5mm !important; 
+        max-width: 210mm !important;
+        max-height: 148.5mm !important;
+        padding: 6mm !important; 
+        margin: 0 auto !important; 
+        box-shadow: none !important; 
+        border: none !important; 
+        box-sizing: border-box !important; 
+        position: relative !important; 
+        top: auto !important; 
+        left: auto !important; 
         right: auto !important;
       }
-
-      .cert-border-outer { border: 4px solid #2563eb !important; }
-      .cert-border-inner { border: 1px solid #3b82f6 !important; }
-
+      .cert-border-outer { 
+        width: 100% !important; 
+        height: 100% !important; 
+        border: 4px solid #2563eb !important; 
+        box-sizing: border-box !important; 
+      }
+      .cert-border-inner { 
+        width: 100% !important; 
+        height: 100% !important; 
+        border: 1px solid #3b82f6 !important; 
+        box-sizing: border-box !important; 
+      }
       * { 
         -webkit-print-color-adjust: exact !important; 
         print-color-adjust: exact !important; 
-      }
-
-      /* Forces exact standard A4 bounds with symmetrical 5mm safety margins */
-      @page { 
-        size: A4; 
-        margin: 5mm; 
       }
     }
   </style>
@@ -652,6 +666,24 @@
   <script>
     // PASTE YOUR DEPLOYED GOOGLE APPS SCRIPT URL HERE:
     const GOOGLE_SHEET_URL = "https://script.google.com/macros/s/AKfycbyNDA6WYyTe8dvTkeNmaEFv66wKW8SIYJ8zzisZFMA3XoXwDAptj-7y-P5LYWqS4s9Z/exec"; 
+
+    // Reset horizontal scroll offsets before mobile print spooler opens
+    window.addEventListener('beforeprint', () => {
+      const stage = document.querySelector('.preview-stage');
+      const wrapper = document.querySelector('.certificate-wrapper');
+      if (wrapper && stage) {
+        stage.scrollLeft = 0;
+        stage.style.overflow = 'visible';
+        wrapper.style.margin = '0 auto';
+      }
+    });
+
+    window.addEventListener('afterprint', () => {
+      const stage = document.querySelector('.preview-stage');
+      if (stage && window.innerWidth <= 768) {
+        stage.style.overflowX = 'auto';
+      }
+    });
 
     window.addEventListener('DOMContentLoaded', () => {
       const today = new Date().toISOString().split('T')[0];
