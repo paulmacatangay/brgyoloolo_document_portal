@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Barangay Certification - Olo-Olo</title>
+  
+  <script>
+    // Safe-Mode Login Check
+    if (sessionStorage.getItem('olo_logged_in') !== 'true' && window.location.protocol !== 'file:') {
+      window.location.href = 'index.html';
+    }
+  </script>
+  
+  <style>
+    * { box-sizing: border-box !important; }
+    html, body { max-width: 100% !important; overflow-x: hidden !important; margin: 0; padding: 0; width: 100%; position: relative; }
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+    :root {
+      --primary-blue: #1e40af;
+      --primary-dark: #1e3a8a;
+      --text-dark: #1f2937;
+      --bg-light: #f3f4f6;
+      --success-green: #15803d;
+      --main-font: 'Helvetica Neue', Helvetica, 'Inter', Arial, sans-serif;
+    }
+
+    *, body, input, select, button, label, p, div { font-family: var(--main-font) !important; box-sizing: border-box; }
+    body { background-color: var(--bg-light); color: var(--text-dark); margin: 0; padding: 0; min-height: 100vh; display: flex; flex-direction: column; }
+    
+    .site-footer { background: var(--primary-dark); color: #ffffff !important; text-align: center; font-size: 0.75rem; padding: 12px 20px; margin-top: auto; width: 100%; font-weight: 500; letter-spacing: 0.3px; border-top: 2px solid #60a5fa; }
+    .site-header { background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary-blue) 100%); color: white; padding: 16px 20px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.15); margin-bottom: 25px; border-bottom: 3px solid #60a5fa; }
+    .header-content { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 15px; }
+    .header-left { display: flex; align-items: center; gap: 15px; }
+    .header-logo { width: 70px; height: 70px; flex-shrink: 0; }
+    .header-logo img { width: 100%; height: 100%; object-fit: contain; }
+    .header-titles h1 { margin: 0; font-size: 1.25rem; font-weight: 700; }
+    .header-titles p { margin: 3px 0 0 0; font-size: 0.8rem; color: #bfdbfe; }
+    .header-actions { display: flex; gap: 8px; align-items: center; }
+    .btn-nav { background: rgba(255, 255, 255, 0.15); color: white; border: 1px solid rgba(255, 255, 255, 0.3); padding: 8px 14px; border-radius: 6px; font-size: 0.8rem; font-weight: 600; text-decoration: none; transition: all 0.2s; white-space: nowrap; }
+    .btn-nav:hover { background: rgba(255, 255, 255, 0.3); }
+    .btn-logout { background: rgba(255, 255, 255, 0.15); color: white; border: 1px solid rgba(255, 255, 255, 0.3); padding: 8px 14px; border-radius: 6px; font-size: 0.8rem; font-weight: 600; cursor: pointer; transition: all 0.2s; white-space: nowrap; }
+    .btn-logout:hover { background: #ef4444; border-color: #ef4444; }
+    
+    .main-content { display: flex; gap: 25px; justify-content: center; align-items: flex-start; flex-wrap: wrap; padding: 0 20px 40px 20px; max-width: 1350px; margin: 0 auto; }
+    .form-container { background: white; padding: 24px; border-radius: 8px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); width: 380px; flex-shrink: 0; }
+    .form-container h2 { margin-top: 0; color: var(--primary-blue); font-size: 1.2rem; border-bottom: 2px solid var(--primary-blue); padding-bottom: 8px; margin-bottom: 15px; }
+    .form-group { margin-bottom: 12px; }
+    .form-group label { display: block; font-size: 0.82rem; font-weight: 600; margin-bottom: 4px; color: #374151; }
+    .form-group input, .form-group select { width: 100%; padding: 8px 10px; border: 1px solid #d1d5db; border-radius: 4px; font-size: 0.9rem; }
+    .readonly-input { background-color: #e5e7eb; font-weight: 700; color: var(--primary-blue); cursor: not-allowed; }
+    
+    .camera-section { background: #f8fafc; border: 1px dashed #cbd5e1; padding: 12px; border-radius: 6px; margin-bottom: 15px; text-align: center; }
+    .camera-section video { width: 100%; max-height: 220px; background: #000; border-radius: 4px; display: none; margin-bottom: 8px; }
+    .btn-cam { background: #475569; color: white; border: none; padding: 8px 12px; font-size: 0.8rem; font-weight: 600; border-radius: 4px; cursor: pointer; transition: background 0.2s; margin: 2px; }
+    .btn-cam:hover { background: #334155; }
+    .btn-snap { background: #059669; }
+    .btn-snap:hover { background: #047857; }
+    
+    .btn-print { width: 100%; background-color: var(--primary-blue); color: white; border: none; padding: 12px; font-size: 0.95rem; font-weight: 600; border-radius: 6px; cursor: pointer; margin-top: 10px; display: flex; justify-content: center; align-items: center; gap: 8px; transition: background 0.2s; }
+    .btn-print:hover { background-color: #1e3a8a; }
+    
+    .status-banner { margin-top: 15px; padding: 10px; border-radius: 6px; font-size: 0.8rem; font-weight: 600; text-align: center; background-color: #e2e8f0; color: #334155; display: flex; align-items: center; justify-content: center; gap: 6px; }
+    .status-success { background-color: #dcfce7; color: #166534; border: 1px solid #86efac; }
+    .status-saving { background-color: #fef9c3; color: #854d0e; border: 1px solid #fde047; }
+    .status-error { background-color: #fee2e2; color: #991b1b; border: 1px solid #fca5a5; }
+    
+    .ledger-container { margin-top: 20px; border-top: 2px dashed #cbd5e1; padding-top: 15px; }
+    .ledger-title { font-size: 0.85rem; font-weight: bold; color: #334155; display: flex; justify-content: space-between; align-items: center; }
+    .record-count { background: #e2e8f0; padding: 2px 8px; border-radius: 12px; font-size: 0.72rem; }
+    
+    .preview-stage { width: 100%; max-width: 210mm; }
+    .mobile-scroll-tip { display: none; background: #eff6ff; color: #1d4ed8; border: 1px solid #bfdbfe; padding: 8px 12px; border-radius: 6px; font-size: 0.8rem; font-weight: 600; text-align: center; margin-bottom: 12px; }
+    
+    .certificate-wrapper { background: white; width: 210mm; height: 297mm; padding: 6mm; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); position: relative; }
+    .cert-border-outer { width: 100%; height: 100%; border: 4px solid #2563eb; padding: 3px; }
+    .cert-border-inner { width: 100%; height: 100%; border: 1px solid #3b82f6; padding: 8mm 10mm; position: relative; display: flex; flex-direction: column; justify-content: space-between; background-color: #ffffff; }
+    
+    .watermark { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 480px; height: 480px; pointer-events: none; z-index: 0; opacity: 0.08; }
+    .watermark img { width: 100%; height: 100%; object-fit: contain; }
+    .cert-header { display: flex; justify-content: space-between; align-items: center; text-align: center; position: relative; z-index: 1; }
+    .header-text p { margin: 1px 0; font-size: 0.8rem; color: #1e3a8a; font-weight: 600; line-height: 1.3; }
+    .header-text p.barangay-name { font-size: 0.95rem; font-weight: 700; margin-top: 3px; }
+    .header-text h3 { margin: 6px 0 0 0; font-size: 0.95rem; color: #1e3a8a; letter-spacing: 0.5px; font-weight: 800; }
+    
+    .cert-title { text-align: center; font-family: 'Times New Roman', Times, serif !important; font-size: 1.7rem; font-weight: bold; color: #1e40af; letter-spacing: 1.5px; margin: 4mm 0 1mm 0; position: relative; z-index: 1; }
+    .control-no { text-align: right; font-weight: bold; font-size: 0.85rem; color: #dc2626; margin-bottom: 4mm; position: relative; z-index: 1; }
+    
+    .cert-body { font-size: 0.9rem; line-height: 1.6; color: #111; position: relative; z-index: 1; flex-grow: 1; }
+    .cert-body p.intro { text-align: justify; text-indent: 30px; margin-bottom: 6mm; }
+    .content-grid { display: flex; justify-content: space-between; align-items: flex-start; gap: 15px; margin-bottom: 6mm; }
+    .details-column { flex: 1; }
+    .details-list { display: table; width: 100%; margin-bottom: 6mm; }
+    .detail-row { display: table-row; }
+    .detail-label { display: table-cell; font-weight: 600; padding: 5px 0; width: 110px; color: #374151; }
+    .detail-val { display: table-cell; font-weight: 700; padding: 5px 0; color: #000; }
+    
+    .name-grid { display: flex; gap: 10px; margin-top: 15px; margin-bottom: 10px; text-align: center; }
+    .name-box { flex: 1; }
+    .name-val { font-weight: 800; font-size: 0.95rem; color: #1e3a8a; text-transform: uppercase; min-height: 22px; border-bottom: 2px solid #000; padding-bottom: 2px; }
+    .name-label { font-size: 0.7rem; color: #4b5563; margin-top: 4px; }
+    
+    .media-column { display: flex; flex-direction: column; align-items: center; gap: 12px; width: 150px; flex-shrink: 0; }
+    .photo-box { width: 130px; height: 130px; border: 2px solid #334155; background: #f8fafc; display: flex; align-items: center; justify-content: center; overflow: hidden; position: relative; }
+    .photo-box img { width: 100%; height: 100%; object-fit: cover; display: none; }
+    .photo-placeholder { font-size: 0.7rem; color: #64748b; text-align: center; padding: 10px; font-weight: 600; }
+    .thumb-box { width: 130px; height: 100px; border: 1px solid #334155; display: flex; align-items: flex-end; justify-content: center; padding-bottom: 6px; }
+    .thumb-label { font-size: 0.7rem; color: #4b5563; font-weight: 600; }
+    
+    .applicant-sig { width: 130px; border-top: 1px solid #000; margin-top: 35px; text-align: center; padding-top: 4px; }
+    
+    .cert-footer { display: flex; justify-content: space-between; align-items: flex-end; position: relative; z-index: 1; margin-top: auto; padding-top: 10px; }
+    .signatory-box { text-align: center; min-width: 220px; }
+    .signatory-name { font-weight: bold; text-decoration: underline; font-size: 0.95rem; color: #1e3a8a; }
+    .signatory-title { font-size: 0.8rem; color: #111; margin-top: 2px; }
+
+    @media (max-width: 768px) {
+      .header-content { flex-direction: column; text-align: center; }
+      .header-left { flex-direction: column; }
+      .header-actions { width: 100%; justify-content: center; }
+      .form-container { width: 100% !important; }
+      .preview-stage { overflow-x: auto !important; display: block !important; }
+      .certificate-wrapper { margin: 0 auto; display: inline-block !important; }
+      .mobile-scroll-tip { display: block; }
+    }
+
+    /* Print Centering Fix */
+    @media print {
+      @page { size: A4 portrait; margin: 0mm !important; }
+      html, body { width: 210mm !important; height: 297mm !important; margin: 0 !important; padding: 0 !important; background: #fff !important; overflow: hidden !important; }
+      .site-header, .form-container, .mobile-scroll-tip, .site-footer { display: none !important; }
+      .main-content { padding: 0 !important; margin: 0 !important; display: block !important; width: 100% !important; }
+      .preview-stage { width: 100% !important; max-width: none !important; padding: 0 !important; margin: 0 !important; border: none !important; background: transparent !important; }
+      .certificate-wrapper { width: 210mm !important; height: 297mm !important; padding: 6mm !important; margin: 0 !important; box-shadow: none !important; border: none !important; box-sizing: border-box !important; position: absolute !important; top: 0 !important; left: 0 !important; }
+      .cert-border-outer { width: 100% !important; height: 100% !important; border: 4px solid #2563eb !important; box-sizing: border-box !important; }
+      .cert-border-inner { width: 100% !important; height: 100% !important; border: 1px solid #3b82f6 !important; box-sizing: border-box !important; }
+      * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="header-content">
+      <div class="header-left">
+        <div class="header-logo">
+          <img src="logo.png" alt="Olo-Olo Logo">
+        </div>
+        <div class="header-titles">
+          <h1>Barangay Certification Generator</h1>
+          <p>Barangay Olo-olo, Lobo, Batangas</p>
+        </div>
+      </div>
+      <div class="header-actions">
+        <a href="dashboard.html" class="btn-nav">Dashboard</a>
+        <button class="btn-logout" onclick="handleLogout()">Logout</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="main-content">
+    <div class="form-container">
+      <h2>Certification Details</h2>
+      
+      <div class="form-group">
+        <label for="inputControl">Control Number</label>
+        <input type="text" id="inputControl" class="readonly-input" readonly>
+      </div>
+
+      <div class="camera-section">
+        <label style="font-size:0.8rem; font-weight:700; display:block; margin-bottom:6px;">Live Photo Capture</label>
+        <video id="webcam" autoplay playsinline></video>
+        <canvas id="canvas" style="display:none;"></canvas>
+        <div>
+          <button type="button" class="btn-cam" id="btnStartCam" onclick="startCamera()">Open Camera</button>
+          <button type="button" class="btn-cam btn-snap" id="btnSnapCam" style="display:none;" onclick="snapPhoto()">Snap Photo</button>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="inputLastName">Last Name</label>
+        <input type="text" id="inputLastName" placeholder="Enter Last Name" oninput="updateCert()">
+      </div>
+
+      <div class="form-group">
+        <label for="inputFirstName">First Name</label>
+        <input type="text" id="inputFirstName" placeholder="Enter First Name" oninput="updateCert()">
+      </div>
+
+      <div class="form-group">
+        <label for="inputMiddleName">Middle Name</label>
+        <input type="text" id="inputMiddleName" placeholder="Enter Middle Name" oninput="updateCert()">
+      </div>
+
+      <div class="form-group">
+        <label for="inputPurok">Address (Purok)</label>
+        <select id="inputPurok" onchange="updateCert()">
+          <option value="1">Purok 1</option>
+          <option value="2">Purok 2</option>
+          <option value="3">Purok 3</option>
+          <option value="4" selected>Purok 4</option>
+          <option value="5">Purok 5</option>
+          <option value="6">Purok 6</option>
+          <option value="7">Purok 7</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="inputStatus">Civil Status</label>
+        <select id="inputStatus" onchange="updateCert()">
+          <option value="Single">Single</option>
+          <option value="Married">Married</option>
+          <option value="Widow">Widow / Widower</option>
+          <option value="Separated">Separated</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="inputBirthdate">Birthdate</label>
+        <input type="date" id="inputBirthdate" onchange="updateCert()">
+      </div>
+
+      <div class="form-group">
+        <label for="inputOccupation">Occupation</label>
+        <input type="text" id="inputOccupation" placeholder="Enter Occupation" oninput="updateCert()">
+      </div>
+
+      <div class="form-group">
+        <label for="inputPurpose">Purpose</label>
+        <input type="text" id="inputPurpose" placeholder="Enter Purpose of Certification" oninput="updateCert()">
+      </div>
+
+      <div class="form-group">
+        <label for="inputDate">Date Issued</label>
+        <input type="date" id="inputDate" onchange="updateCert()">
+      </div>
+
+      <button class="btn-print" id="btnIssue" onclick="issueAndPrint()">
+        Issue & Print Certificate
+      </button>
+
+      <div id="syncStatus" class="status-banner">
+        Connected to Cloud Database
+      </div>
+
+      <div class="ledger-container">
+        <div class="ledger-title">
+          <span>Logs Ledger</span>
+          <span class="record-count" id="recordCount">0 Records</span>
+        </div>
+        <div style="font-size: 0.75rem; text-align: center; margin-top: 8px;">
+          <a href="#" onclick="resetSequence(event)" style="color: #ef4444; text-decoration: none;">Adjust Sequence Number</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="preview-stage">
+      <div class="mobile-scroll-tip">Note: Swipe left or right on the certificate below to check layout preview.</div>
+      
+      <div class="certificate-wrapper">
+        <div class="cert-border-outer">
+          <div class="cert-border-inner">
+            
+            <div class="watermark">
+              <img src="logo.png" alt="Watermark Logo">
+            </div>
+
+            <div class="cert-header">
+              <div class="logo-placeholder">
+                <img src="logo.png" alt="Brgy Seal" style="width: 110px; height: 110px; object-fit: contain;">
+              </div>
+              <div class="header-text">
+                <p>Republic of the Philippines</p>
+                <p>Province of Batangas</p>
+                <p>Municipality of Lobo</p>
+                <p class="barangay-name">BARANGAY OLO-OLO</p>
+                <h3>OFFICE OF THE PUNONG BARANGAY</h3>
+              </div>
+              <div class="logo-placeholder">
+                <img src="bagong-pilipinas-logo.png" alt="Logo 2" style="width: 95px; height: 95px; object-fit: contain;">
+              </div>
+            </div>
+
+            <div class="cert-title">BARANGAY CERTIFICATION</div>
+            <div class="control-no">CONTROL NO. <span id="outControl"></span></div>
+
+            <div class="cert-body">
+              <p class="intro">
+                <strong>THIS IS TO CERTIFY</strong> that the person whose name, picture, and signature appear hereon has issued a CERTIFICATION from this office.
+              </p>
+
+              <div class="content-grid">
+                <div class="details-column">
+                  <div class="details-list">
+                    <div class="detail-row">
+                      <div class="detail-label">Address</div>
+                      <div class="detail-val">: <span id="outAddress"></span></div>
+                    </div>
+                    <div class="detail-row">
+                      <div class="detail-label">Civil Status</div>
+                      <div class="detail-val">: <span id="outStatus"></span></div>
+                    </div>
+                    <div class="detail-row">
+                      <div class="detail-label">Birthdate</div>
+                      <div class="detail-val">: <span id="outBirthdate"></span></div>
+                    </div>
+                    <div class="detail-row">
+                      <div class="detail-label">Occupation</div>
+                      <div class="detail-val">: <span id="outOccupation"></span></div>
+                    </div>
+                    <div class="detail-row">
+                      <div class="detail-label">Purpose</div>
+                      <div class="detail-val">: <span id="outPurpose"></span></div>
+                    </div>
+                  </div>
+
+                  <div class="name-grid">
+                    <div class="name-box">
+                      <div class="name-val" id="outLastName"></div>
+                      <div class="name-label">Last Name</div>
+                    </div>
+                    <div class="name-box">
+                      <div class="name-val" id="outFirstName"></div>
+                      <div class="name-label">First Name</div>
+                    </div>
+                    <div class="name-box">
+                      <div class="name-val" id="outMiddleName"></div>
+                      <div class="name-label">Middle Name</div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="media-column">
+                  <div class="photo-box">
+                    <span class="photo-placeholder" id="photoPlaceholderText">LIVE PHOTO<br>(2x2)</span>
+                    <img id="outPhoto" alt="Applicant Photo">
+                  </div>
+                  <div class="thumb-box">
+                    <span class="thumb-label">Right Thumbmark</span>
+                  </div>
+                  <div class="applicant-sig">
+                    <span class="thumb-label">Signature of Applicant</span>
+                  </div>
+                </div>
+              </div>
+
+              <p style="text-align: justify; text-indent: 30px; margin-top: 4mm;">
+                <strong>THIS FURTHER CERTIFIES</strong> that he/she is known to me of good moral character, a law-abiding citizen, no pending case and no derogatory records on file as of this date.
+              </p>
+
+              <p style="margin-top: 6mm;">
+                <strong>ISSUED</strong> this <span id="outDay" style="font-weight:bold; text-decoration:underline;">___</span> day of <span id="outMonth" style="font-weight:bold; text-decoration:underline;">_______</span> <span id="outYear" style="font-weight:bold; text-decoration:underline;">____</span> at Barangay Olo-olo, Lobo, Batangas, Philippines.
+              </p>
+            </div>
+
+            <div class="cert-footer">
+              <div class="signatory-box">
+                <div class="signatory-name">MA. VILMA C. MACATANGAY</div>
+                <div class="signatory-title">Barangay Secretary</div>
+              </div>
+              <div class="signatory-box">
+                <div class="signatory-name">Hon. DANILO B. BEREDO</div>
+                <div class="signatory-title">Punong Barangay</div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+  
+  <footer class="site-footer">
+    Managed and Maintained by Paul Andrew Macatangay
+  </footer>
+
+  <script>
+    // PASTE YOUR NEW SEPARATE GOOGLE SHEET APPS SCRIPT URL HERE:
+    const GOOGLE_SHEET_URL = "https://script.google.com/macros/s/AKfycbyD1FW9tUi7377leEmLaZuTiXNArujAKfLkxH_Ic7qaqDYy49XBjd2xUw0Q-5skf8NX/exec"; 
+    let videoStream = null;
+
+    window.addEventListener('DOMContentLoaded', () => {
+      try {
+        const today = new Date().toISOString().split('T')[0];
+        document.getElementById('inputDate').value = today;
+        
+        loadNextControlNumber();
+        syncCloudSequence();
+        updateRecordCountDisplay();
+        updateCert();
+      } catch (err) {
+        console.error("Initialization error:", err);
+      }
+    });
+
+    function handleLogout() {
+      sessionStorage.removeItem('olo_logged_in');
+      window.location.href = 'index.html';
+    }
+
+    function startCamera() {
+      const video = document.getElementById('webcam');
+      const btnStart = document.getElementById('btnStartCam');
+      const btnSnap = document.getElementById('btnSnapCam');
+      
+      if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+        alert("Camera access is not supported by your browser or requires an HTTPS / Localhost server.");
+        return;
+      }
+
+      navigator.mediaDevices.getUserMedia({ video: { width: 300, height: 300 } })
+        .then(stream => {
+          videoStream = stream;
+          video.srcObject = stream;
+          video.style.display = 'block';
+          btnStart.style.display = 'none';
+          btnSnap.style.display = 'inline-block';
+        })
+        .catch(err => {
+          alert("Camera access denied or unavailable: " + err.message);
+        });
+    }
+
+    function snapPhoto() {
+      const video = document.getElementById('webcam');
+      const canvas = document.getElementById('canvas');
+      const certPhoto = document.getElementById('outPhoto');
+      const btnStart = document.getElementById('btnStartCam');
+      const btnSnap = document.getElementById('btnSnapCam');
+
+      canvas.width = video.videoWidth || 300;
+      canvas.height = video.videoHeight || 300;
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+      certPhoto.src = canvas.toDataURL('image/png');
+      certPhoto.style.display = 'block';
+      document.getElementById('photoPlaceholderText').style.display = 'none';
+
+      if (videoStream) {
+        videoStream.getTracks().forEach(track => track.stop());
+      }
+      video.style.display = 'none';
+      btnSnap.style.display = 'none';
+      btnStart.innerText = "Retake Photo";
+      btnStart.style.display = 'inline-block';
+    }
+
+    function syncCloudSequence() {
+      const statusBanner = document.getElementById('syncStatus');
+      if (!GOOGLE_SHEET_URL || GOOGLE_SHEET_URL.includes("YOUR_NEW_SEPARATE")) return;
+
+      fetch(GOOGLE_SHEET_URL)
+        .then(response => response.json())
+        .then(data => {
+          if (data && data.nextSequence) {
+            localStorage.setItem('olo_bc_sequence', data.nextSequence);
+            loadNextControlNumber();
+            statusBanner.className = "status-banner status-success";
+            statusBanner.innerHTML = "Synced with Cloud Database (" + data.formattedControl + ")";
+            setTimeout(() => {
+              statusBanner.className = "status-banner";
+              statusBanner.innerHTML = "Connected to Cloud Database";
+            }, 3000);
+          }
+        })
+        .catch(() => {
+          statusBanner.className = "status-banner status-saving";
+          statusBanner.innerHTML = "Offline Mode: Using Device Sequence";
+        });
+    }
+
+    function loadNextControlNumber() {
+      let currentSeq = localStorage.getItem('olo_bc_sequence') || 1;
+      let formattedNumber = "BC-" + String(currentSeq).padStart(4, '0');
+      document.getElementById('inputControl').value = formattedNumber;
+      document.getElementById('outControl').innerText = formattedNumber;
+    }
+
+    function incrementSequence() {
+      let currentSeq = parseInt(localStorage.getItem('olo_bc_sequence') || 1);
+      localStorage.setItem('olo_bc_sequence', currentSeq + 1);
+      loadNextControlNumber();
+    }
+
+    function resetSequence(e) {
+      e.preventDefault();
+      let newNum = prompt("Enter new starting number sequence for BC:", "1");
+      if (newNum && !isNaN(newNum)) {
+        localStorage.setItem('olo_bc_sequence', parseInt(newNum));
+        loadNextControlNumber();
+        alert("BC Sequence configured successfully!");
+      }
+    }
+
+    function issueAndPrint() {
+      const lastName = document.getElementById('inputLastName').value.trim();
+      const firstName = document.getElementById('inputFirstName').value.trim();
+      
+      if (!lastName || !firstName) {
+        alert("Please enter at least the Last Name and First Name before issuing.");
+        return;
+      }
+
+      const btn = document.getElementById('btnIssue');
+      const statusBanner = document.getElementById('syncStatus');
+
+      const record = {
+        type: "CERTIFICATION",
+        controlNumber: document.getElementById('inputControl').value,
+        name: `${lastName}, ${firstName} ${document.getElementById('inputMiddleName').value.trim()}`.trim(),
+        address: `Purok ${document.getElementById('inputPurok').value}, Brgy. Olo-olo, Lobo, Batangas`,
+        maritalStatus: document.getElementById('inputStatus').value,
+        birthdate: document.getElementById('inputBirthdate').value,
+        occupation: document.getElementById('inputOccupation').value.trim(),
+        purpose: document.getElementById('inputPurpose').value.trim() || 'DOCUMENTARY REQUIREMENT',
+        dateIssued: document.getElementById('inputDate').value
+      };
+
+      let records = JSON.parse(localStorage.getItem('olo_bc_records') || '[]');
+      records.push(record);
+      localStorage.setItem('olo_bc_records', JSON.stringify(records));
+      updateRecordCountDisplay();
+
+      window.print();
+      incrementSequence();
+
+      if (GOOGLE_SHEET_URL && !GOOGLE_SHEET_URL.includes("YOUR_NEW_SEPARATE")) {
+        btn.disabled = true;
+        statusBanner.className = "status-banner status-saving";
+        statusBanner.innerHTML = "Saving to Separate Google Sheet...";
+
+        fetch(GOOGLE_SHEET_URL, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(record)
+        })
+        .then(() => {
+          statusBanner.className = "status-banner status-success";
+          statusBanner.innerHTML = "Saved to Separate Google Sheet!";
+          btn.disabled = false;
+          document.getElementById('inputLastName').value = '';
+          document.getElementById('inputFirstName').value = '';
+          document.getElementById('inputMiddleName').value = '';
+          document.getElementById('inputOccupation').value = '';
+          document.getElementById('inputPurpose').value = '';
+          updateCert();
+          setTimeout(() => { syncCloudSequence(); }, 1500);
+        })
+        .catch(() => {
+          statusBanner.className = "status-banner status-error";
+          statusBanner.innerHTML = "Network Sync Failed (Saved Locally)";
+          btn.disabled = false;
+        });
+      } else {
+        document.getElementById('inputLastName').value = '';
+        document.getElementById('inputFirstName').value = '';
+        document.getElementById('inputMiddleName').value = '';
+        document.getElementById('inputOccupation').value = '';
+        document.getElementById('inputPurpose').value = '';
+        updateCert();
+      }
+    }
+
+    function updateRecordCountDisplay() {
+      let records = JSON.parse(localStorage.getItem('olo_bc_records') || '[]');
+      document.getElementById('recordCount').innerText = records.length + " Saved Locally";
+    }
+
+    function getOrdinalSuffix(i) {
+      const j = i % 10, k = i % 100;
+      if (j == 1 && k != 11) return (i < 10 ? "0" + i : i) + "st";
+      if (j == 2 && k != 12) return (i < 10 ? "0" + i : i) + "nd";
+      if (j == 3 && k != 13) return (i < 10 ? "0" + i : i) + "rd";
+      return (i < 10 ? "0" + i : i) + "th";
+    }
+
+    function formatDateToMMDDYYYY(dateStr) {
+      if (!dateStr) return "";
+      const parts = dateStr.split('-');
+      return `${parts[1]}/${parts[2]}/${parts[0]}`;
+    }
+
+    function updateCert() {
+      const lName = document.getElementById('inputLastName').value.trim();
+      const fName = document.getElementById('inputFirstName').value.trim();
+      const mName = document.getElementById('inputMiddleName').value.trim();
+      const purok = document.getElementById('inputPurok').value;
+      const status = document.getElementById('inputStatus').value;
+      const bDate = document.getElementById('inputBirthdate').value;
+      const occ = document.getElementById('inputOccupation').value.trim();
+      const purpose = document.getElementById('inputPurpose').value.trim();
+      const dateVal = document.getElementById('inputDate').value;
+      const control = document.getElementById('inputControl').value;
+
+      document.getElementById('outLastName').innerText = lName;
+      document.getElementById('outFirstName').innerText = fName;
+      document.getElementById('outMiddleName').innerText = mName;
+      document.getElementById('outAddress').innerText = `Purok ${purok}, Brgy. Olo-olo, Lobo, Batangas`;
+      document.getElementById('outStatus').innerText = status;
+      document.getElementById('outBirthdate').innerText = formatDateToMMDDYYYY(bDate);
+      document.getElementById('outOccupation').innerText = occ;
+      document.getElementById('outPurpose').innerText = purpose;
+      document.getElementById('outControl').innerText = control || 'BC-0001';
+
+      if (dateVal) {
+        const dateObj = new Date(dateVal + 'T00:00:00');
+        const dayNum = dateObj.getDate();
+        const monthName = dateObj.toLocaleString('en-US', { month: 'long' });
+        const yearNum = dateObj.getFullYear();
+
+        document.getElementById('outDay').innerText = getOrdinalSuffix(dayNum);
+        document.getElementById('outMonth').innerText = monthName;
+        document.getElementById('outYear').innerText = yearNum;
+      } else {
+        document.getElementById('outDay').innerText = "___";
+        document.getElementById('outMonth').innerText = "_______";
+        document.getElementById('outYear').innerText = "____";
+      }
+    }
+  </script>
+</body>
+</html>
